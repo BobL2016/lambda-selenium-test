@@ -15,7 +15,7 @@ namespace lambda_selenium_test
 {
     public class Function
     {
-        
+
         /// <summary>
         /// A simple function that takes a string and returns both the upper and lower case version of the string.
         /// </summary>
@@ -25,7 +25,7 @@ namespace lambda_selenium_test
         public string FunctionHandler(FunctionInput input, ILambdaContext context)
         {
             Console.WriteLine($"input.Url: {input.Url.ToString()}");
-            
+
             // Setup Selenium driver
             ChromeOptions chromeOptions = new ChromeOptions();
             chromeOptions.AddUserProfilePreference("download.prompt_for_download", false);
@@ -34,9 +34,21 @@ namespace lambda_selenium_test
             chromeOptions.AddArgument("--verbose");
             chromeOptions.AddArgument("--disable-dev-shm-usage");
 
-            IWebDriver driver = new ChromeDriver(chromeOptions);
 
-            driver.Navigate().GoToUrl(input.Url);
+            // Console.WriteLine(input.GoToUrl);
+            IWebDriver driver = null;
+
+            if (input.UseChromeDriver)
+            {
+                driver = new ChromeDriver(chromeOptions);
+            }
+
+            if (input.GoToUrl)
+            {
+                driver.Navigate().GoToUrl(input.Url);
+                var about = driver.FindElement(By.LinkText("About"));
+                Console.WriteLine($"about.Text: {about.Text}");
+            }
             return input.Url.ToString();
         }
     }
@@ -46,5 +58,7 @@ namespace lambda_selenium_test
     public class FunctionInput
     {
         public Uri Url { get; set; }
+        public bool UseChromeDriver { get; set; }
+        public bool GoToUrl { get; set; }
     }
 }
