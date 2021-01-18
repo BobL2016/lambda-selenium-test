@@ -11,7 +11,12 @@ WORKDIR /var/task
 # Alternatively Docker multi-stage build could be used to build the .NET Lambda project inside the image.
 # For more information on this approach checkout the project's README.md file.
 
-RUN yum install -y unzip
+RUN yum install -y unzip net-tools
+
+# For testing...
+RUN yum install -y net-tools iputils
+ENV PATH="/usr/sbin:${PATH}"
+
 
 # Install Chrome Driver
 RUN cd /tmp/

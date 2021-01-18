@@ -24,32 +24,45 @@ namespace lambda_selenium_test
         /// <returns></returns>
         public string FunctionHandler(FunctionInput input, ILambdaContext context)
         {
-            Console.WriteLine($"input.Url: {input.Url.ToString()}");
+            var output = "";
+            output += "**** ifconfig" + Environment.NewLine;
+            output += "ifconfig".Bash() + Environment.NewLine;
+            output += "**** /usr/sbin/route" + Environment.NewLine;
+            output += "/usr/sbin/route".Bash() + Environment.NewLine;
+            output += "**** PING: google.com" + Environment.NewLine;
+            output += "ping -c 4 google.com".Bash() + Environment.NewLine;
+            output += "**** PING: 127.0.0.1" + Environment.NewLine;
+            output += "ping -c 4 127.0.0.1".Bash() + Environment.NewLine;
+            Console.WriteLine(output);
 
-            // Setup Selenium driver
-            ChromeOptions chromeOptions = new ChromeOptions();
-            chromeOptions.AddUserProfilePreference("download.prompt_for_download", false);
-            chromeOptions.AddArgument("--no-sandbox");
-            chromeOptions.AddArgument("--headless");
-            chromeOptions.AddArgument("--verbose");
-            chromeOptions.AddArgument("--disable-dev-shm-usage");
+            return output;
+
+        //     Console.WriteLine($"input.Url: {input.Url.ToString()}");
+
+        //     // Setup Selenium driver
+        //     ChromeOptions chromeOptions = new ChromeOptions();
+        //     chromeOptions.AddUserProfilePreference("download.prompt_for_download", false);
+        //     chromeOptions.AddArgument("--no-sandbox");
+        //     chromeOptions.AddArgument("--headless");
+        //     chromeOptions.AddArgument("--verbose");
+        //     chromeOptions.AddArgument("--disable-dev-shm-usage");
 
 
-            // Console.WriteLine(input.GoToUrl);
-            IWebDriver driver = null;
+        //     // Console.WriteLine(input.GoToUrl);
+        //     IWebDriver driver = null;
 
-            if (input.UseChromeDriver)
-            {
-                driver = new ChromeDriver(chromeOptions);
-            }
+        //     if (input.UseChromeDriver)
+        //     {
+        //         driver = new ChromeDriver(chromeOptions);
+        //     }
 
-            if (input.GoToUrl)
-            {
-                driver.Navigate().GoToUrl(input.Url);
-                var about = driver.FindElement(By.LinkText("About"));
-                Console.WriteLine($"about.Text: {about.Text}");
-            }
-            return input.Url.ToString();
+        //     if (input.GoToUrl)
+        //     {
+        //         driver.Navigate().GoToUrl(input.Url);
+        //         var about = driver.FindElement(By.LinkText("About"));
+        //         Console.WriteLine($"about.Text: {about.Text}");
+        //     }
+        //     return input.Url.ToString();
         }
     }
 
